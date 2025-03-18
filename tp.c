@@ -1,0 +1,1 @@
+// tp.c deve apenas invocar, tratar as respostas das funções e procedimentos definidos no arquivo indiceInvertido.h e impressões necessárias
