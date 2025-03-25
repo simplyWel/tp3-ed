@@ -25,17 +25,33 @@ void liberaHash(HashTable *hash) {
 
 int insereHash(HashTable *hash, char *palavra, char *documento) {
     int idx = hashFunction(palavra, hash->tamanho);
+
     for (int i = 0; i < hash->tamanho; i++) {
         int pos = (idx + i) % hash->tamanho;
-        if (hash->tabela[pos].qtdDocumentos == 0 || strcmp(hash->tabela[pos].palavra, palavra) == 0) {
-            if (hash->tabela[pos].qtdDocumentos == 0) {
-                strcpy(hash->tabela[pos].palavra, palavra);
+
+        // Se a posição está vazia, insere a nova palavra
+        if (hash->tabela[pos].qtdDocumentos == 0) {
+            strcpy(hash->tabela[pos].palavra, palavra);
+            strcpy(hash->tabela[pos].documentos[0], documento);
+            hash->tabela[pos].qtdDocumentos = 1;
+            return 1;
+        }
+
+        // Se a palavra já existe, verifica se o documento já foi adicionado
+        if (strcmp(hash->tabela[pos].palavra, palavra) == 0) {
+            for (int j = 0; j < hash->tabela[pos].qtdDocumentos; j++) {
+                if (strcmp(hash->tabela[pos].documentos[j], documento) == 0) {
+                    return 1; // Documento já existe, não precisa inserir
+                }
             }
-            strcpy(hash->tabela[pos].documentos[hash->tabela[pos].qtdDocumentos++], documento);
+            // Adiciona o novo documento
+            strcpy(hash->tabela[pos].documentos[hash->tabela[pos].qtdDocumentos], documento);
+            hash->tabela[pos].qtdDocumentos++;
             return 1;
         }
     }
-    return 0; // Tabela cheia
+    
+    return 0; // Falha ao inserir (tabela cheia)
 }
 
 int buscaHash(HashTable *hash, char *palavra, EntradaHash **resultado) {

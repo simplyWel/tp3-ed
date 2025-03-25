@@ -20,7 +20,7 @@ int main() {
 
         // Lê as palavras associadas ao arquivo até o final da linha
         while (scanf("%s", palavra) == 1) {
-            if (strcmp(palavra, "I") == 0) {
+            if (getchar() == '\n') {
                 break; // Sai do loop se encontrar o comando "I"
             }
             inserePalavra(palavra, nomeArquivo); // Insere a palavra e o documento no índice
