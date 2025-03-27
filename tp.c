@@ -22,7 +22,7 @@ int main() {
         scanf("%s", nomeArquivo);
         getchar(); // Consome o caractere de nova linha após o nome do arquivo
 
-        if (strlen(nomeArquivo) < MAX_TAMANHO_DOCUMENTO) continue;
+        if (strlen(nomeArquivo) > MAX_TAMANHO_DOCUMENTO) continue;
 
         // Lê a linha com as palavras associadas ao arquivo
         if (fgets(linha, sizeof(linha), stdin) != NULL) {
