@@ -6,6 +6,22 @@
 
 static HashTable *indice;
 
+int comparaEntradas(const void *a, const void *b) {
+    EntradaHash *entradaA = (EntradaHash *)a;
+    EntradaHash *entradaB = (EntradaHash *)b;
+    return strcmp(entradaA->palavra, entradaB->palavra);
+}
+
+void ordenaPalavras(HashTable *indice) {
+    qsort(indice->tabela, indice->tamanho, sizeof(EntradaHash), comparaEntradas);
+}
+
+void ordenaDocumentos(EntradaHash *entrada) {
+    qsort(entrada->documentos, entrada->qtdDocumentos, sizeof(entrada->documentos[0]), (int (*)(const void *, const void *))strcmp);
+}
+
+
+
 HashTable* aloca(int tamanho) {
     indice = criaHash(tamanho); // Inicializa a tabela hash com o tamanho especificado
     return indice; // Retorna o ponteiro para a tabela hash
@@ -27,27 +43,56 @@ int busca(char *palavra) {
     return 0; // Palavra não encontrada
 }
 
-void consulta(char **palavras, int qtdPalavras) {
+void consulta(HashTable *indice, char **palavras, int qtdPalavras) {
     int encontrados[100] = {0}; // Array para contar os documentos encontrados
+    char *documentos[100];      // Array para armazenar os nomes dos documentos
+    int totalDocumentos = 0;
+
+    // Itera sobre todas as palavras fornecidas
     for (int i = 0; i < qtdPalavras; i++) {
         EntradaHash *resultado;
         if (buscaHash(indice, palavras[i], &resultado)) {
-            for (int j = 0; j < resultado->qtdDocumentos; j++) {
-                encontrados[j]++;
+            // Para a primeira palavra, inicializa o array de documentos
+            if (i == 0) {
+                for (int j = 0; j < resultado->qtdDocumentos; j++) {
+                    documentos[j] = resultado->documentos[j];
+                    encontrados[j] = 1; // Marca o documento como encontrado para a primeira palavra
+                }
+                totalDocumentos = resultado->qtdDocumentos;
+            } else {
+                // Para as palavras subsequentes, verifica quais documentos ainda são válidos
+                for (int j = 0; j < totalDocumentos; j++) {
+                    int encontrado = 0;
+                    for (int k = 0; k < resultado->qtdDocumentos; k++) {
+                        if (strcmp(documentos[j], resultado->documentos[k]) == 0) {
+                            encontrado = 1;
+                            break;
+                        }
+                    }
+                    if (!encontrado) {
+                        encontrados[j] = 0; // Marca o documento como inválido
+                    }
+                }
             }
         } else {
+            // Se uma palavra não for encontrada, nenhum documento contém todas as palavras
             printf("none\n");
-            return; // Se uma palavra não for encontrada, não há documentos que contenham todas
+            return;
         }
     }
 
     // Imprime os documentos que contêm todas as palavras
-    for (int i = 0; i < 100; i++) {
-        if (encontrados[i] == qtdPalavras) {
-            printf("%s ", indice->tabela[i].documentos[i]);
+    int encontrouAlgum = 0;
+    for (int i = 0; i < totalDocumentos; i++) {
+        if (encontrados[i]) {
+            printf("%s\n", documentos[i]);
+            encontrouAlgum = 1;
         }
     }
-    printf("\n");
+
+    if (!encontrouAlgum) {
+        printf("none\n");
+    }
 }
 
 void imprime(HashTable *indice) {

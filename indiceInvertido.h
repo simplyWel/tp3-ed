@@ -14,6 +14,9 @@ typedef struct {
     int totalEntradas;
 } IndiceInvertido;
 
+void ordenaPalavras(HashTable *indice);
+void ordenaDocumentos(EntradaHash *entrada);
+
 // aloca o TAD IndiceInvertido
 HashTable* aloca(int tamanho);
 
@@ -27,7 +30,7 @@ void insereDocumento(char *palavra, char *documento);
 int busca(char *palavra);
 
 // Baseado em uma ou mais chaves, retorna o nome dos documentos que contêm todas as chaves no índice invertido presente no TAD IndiceInvertido
-void consulta(char **palavras, int qtdPalavras);
+void consulta(HashTable *indice, char **palavras, int qtdPalavras);
 
 // imprime o índice invertido presente no TAD IndiceInvertido
 void imprime(HashTable *indice);
