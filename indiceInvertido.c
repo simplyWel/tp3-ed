@@ -23,6 +23,7 @@ void ordenaDocumentos(EntradaHash *entrada) {
 
 
 HashTable* aloca(int tamanho) {
+    if (tamanho > MAX_VOCABULARIO)  return NULL;
     indice = criaHash(tamanho); // Inicializa a tabela hash com o tamanho especificado
     return indice; // Retorna o ponteiro para a tabela hash
 }
@@ -44,8 +45,10 @@ int busca(char *palavra) {
 }
 
 void consulta(HashTable *indice, char **palavras, int qtdPalavras) {
-    int encontrados[100] = {0}; // Array para contar os documentos encontrados
-    char *documentos[100];      // Array para armazenar os nomes dos documentos
+    if (qtdPalavras > MAX_PALAVRAS_BUSCADAS) return;
+
+    int encontrados[MAX_DOCUMENTOS] = {0}; // Array para contar os documentos encontrados
+    char *documentos[MAX_DOCUMENTOS];      // Array para armazenar os nomes dos documentos
     int totalDocumentos = 0;
 
     // Itera sobre todas as palavras fornecidas
@@ -110,6 +113,7 @@ void imprime(HashTable *indice) {
 void inserePalavra(char *palavra, char *documento) {
     EntradaHash *resultado;
     if (buscaHash(indice, palavra, &resultado)) {
+        if (resultado->qtdDocumentos > MAX_PALAVRAS_POR_DOCUMENTO) return;
         // Verifica se o documento já está associado à palavra
         for (int i = 0; i < resultado->qtdDocumentos; i++) {
             if (strcmp(resultado->documentos[i], documento) == 0) {

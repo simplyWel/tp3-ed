@@ -3,6 +3,13 @@
 #include <stdio.h>
 #include "hash.h"
 
+#define MAX_DOCUMENTOS 100
+#define MAX_PALAVRAS_BUSCADAS 100
+#define MAX_PALAVRAS_POR_DOCUMENTO 1000
+#define MAX_VOCABULARIO 1000
+#define MAX_TAMANHO_PALAVRA 20
+#define MAX_TAMANHO_DOCUMENTO 50
+
 typedef struct {
     char palavra[20];
     char documentos[100][100];
