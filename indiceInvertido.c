@@ -84,6 +84,8 @@ void consulta(HashTable *indice, char **palavras, int qtdPalavras) {
         }
     }
 
+    qsort(documentos, totalDocumentos, sizeof(documentos[0]), (int (*)(const void *, const void *))strcmp);
+
     // Imprime os documentos que contêm todas as palavras
     int encontrouAlgum = 0;
     for (int i = 0; i < totalDocumentos; i++) {

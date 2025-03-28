@@ -22,13 +22,15 @@ typedef struct {
 } IndiceInvertido;
 
 void ordenaPalavras(HashTable *indice);
-void ordenaDocumentos(EntradaHash *entrada);
+
 
 // aloca o TAD IndiceInvertido
-HashTable* aloca(int tamanho);
+
 
 // libera o TAD IndiceInvertido
 void libera(HashTable *indice);
+
+void ordenaDocumentos(EntradaHash *entrada);
 
 // insere um documento baseado na chave no TAD IndiceInvertido
 void insereDocumento(char *palavra, char *documento);

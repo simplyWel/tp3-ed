@@ -1,12 +1,12 @@
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h> 
 #include "indiceInvertido.h"
 #include "hash.h"
 
 int main() {
-    HashTable *indice = aloca(100); // Inicializa o índice invertido com tamanho 100
+    HashTable *indice = aloca(MAX_TAMANHO_VOCABULARIO); // Inicializa o índice invertido com tamanho 1000
+    if(indice == NULL) return 0; // Verifica se a alocação foi mal-sucedida
     int n;
 
     // Lê o número de documentos
@@ -35,7 +35,7 @@ int main() {
             while (palavra != NULL) {
                 if (contPalavras >= MAX_PALAVRAS_POR_DOCUMENTO) break;
                 if (strlen(palavra) > MAX_TAMANHO_PALAVRA) {
-                    palavra = strtok(NULL, " ");
+                    palavra = strtok(NULL, " "); //strtok retorna NULL se não houver mais palavras
                     continue;
                 }
                 inserePalavra(palavra, nomeArquivo); // Insere a palavra e o documento no índice
@@ -46,16 +46,10 @@ int main() {
     }
     char opcao;
     scanf("%c", &opcao);
-    if (opcao == 'I' || opcao == 'i'){
-        ordenaPalavras(indice);
-        for (int i = 0; i < indice->tamanho; i++) {
-            if (indice->tabela[i].qtdDocumentos > 0) {
-                ordenaDocumentos(&indice->tabela[i]);
-            }
-        }
+    if (opcao == 'I' || opcao == 'i') { 
         // Imprime o índice invertido
         imprime(indice);
-    } else if (opcao == 'B' || opcao == 'B'){
+    } else if (opcao == 'B' || opcao == 'b') {
         char linha[200];
         getchar(); // Consome o caractere de nova linha após o comando
         if (fgets(linha, sizeof(linha), stdin) != NULL) {
@@ -67,16 +61,20 @@ int main() {
             char *palavra = strtok(linha, " ");
             while (palavra != NULL) {
                 if (qtdPalavras > MAX_PALAVRAS_BUSCADAS) break;
-                
                 palavras[qtdPalavras++] = palavra;
                 palavra = strtok(NULL, " ");
             }
-    
+            for (int i = 0; i < indice->tamanho; i++) {
+                if (indice->tabela[i].qtdDocumentos > 0) {
+                    ordenaDocumentos(&indice->tabela[i]);
+                }
+            }
             // Chama a função consulta para buscar os documentos
             consulta(indice, palavras, qtdPalavras);
         }
     }
     // Libera os recursos alocados
+    // imprimeHash(indice); // Para depuração, imprime o índice hash
     libera(indice);
     return 0;
 }
