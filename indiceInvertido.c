@@ -6,24 +6,8 @@
 
 static HashTable *indice;
 
-int comparaEntradas(const void *a, const void *b) {
-    EntradaHash *entradaA = (EntradaHash *)a;
-    EntradaHash *entradaB = (EntradaHash *)b;
-    return strcmp(entradaA->palavra, entradaB->palavra);
-}
-
-void ordenaPalavras(HashTable *indice) {
-    qsort(indice->tabela, indice->tamanho, sizeof(EntradaHash), comparaEntradas);
-}
-
-void ordenaDocumentos(EntradaHash *entrada) {
-    qsort(entrada->documentos, entrada->qtdDocumentos, sizeof(entrada->documentos[0]), (int (*)(const void *, const void *))strcmp);
-}
-
-
-
 HashTable* aloca(int tamanho) {
-    if (tamanho > MAX_VOCABULARIO)  return NULL;
+    if (tamanho > MAX_TAMANHO_VOCABULARIO)  return NULL;
     indice = criaHash(tamanho); // Inicializa a tabela hash com o tamanho especificado
     return indice; // Retorna o ponteiro para a tabela hash
 }
@@ -84,18 +68,17 @@ void consulta(HashTable *indice, char **palavras, int qtdPalavras) {
         }
     }
 
-    qsort(documentos, totalDocumentos, sizeof(documentos[0]), (int (*)(const void *, const void *))strcmp);
 
     // Imprime os documentos que contêm todas as palavras
-    int encontrouAlgum = 0;
+    int encontrou = 0;
     for (int i = 0; i < totalDocumentos; i++) {
         if (encontrados[i]) {
             printf("%s\n", documentos[i]);
-            encontrouAlgum = 1;
+            encontrou = 1;
         }
     }
 
-    if (!encontrouAlgum) {
+    if (!encontrou) {
         printf("none\n");
     }
 }

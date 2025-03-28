@@ -3,28 +3,7 @@
 #include <stdio.h>
 #include "hash.h"
 
-#define MAX_DOCUMENTOS 100
-#define MAX_PALAVRAS_BUSCADAS 100
-#define MAX_PALAVRAS_POR_DOCUMENTO 1000
-#define MAX_VOCABULARIO 1000
-#define MAX_TAMANHO_PALAVRA 20
-#define MAX_TAMANHO_DOCUMENTO 50
-
-typedef struct {
-    char palavra[20];
-    char documentos[100][100];
-    int totalDoc;
-} EntradaIndice;
-
-typedef struct {
-    EntradaIndice *entradas;
-    int totalEntradas;
-} IndiceInvertido;
-
-void ordenaPalavras(HashTable *indice);
-
-
-// aloca o TAD IndiceInvertido
+// aloca o TAD IndiceInvertido e inicializa o índice invertido
 
 
 // libera o TAD IndiceInvertido
@@ -32,8 +11,7 @@ void libera(HashTable *indice);
 
 void ordenaDocumentos(EntradaHash *entrada);
 
-// insere um documento baseado na chave no TAD IndiceInvertido
-void insereDocumento(char *palavra, char *documento);
+HashTable* aloca(int tamanho);
 
 // retorna o índice de uma chave no TAD IndiceInvertido
 int busca(char *palavra);
