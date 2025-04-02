@@ -4,12 +4,11 @@
 #include "indiceInvertido.h"
 #include "hash.h"
 
-static HashTable *indice;
-
 HashTable* aloca(int tamanho) {
-    if (tamanho > MAX_TAMANHO_VOCABULARIO) return NULL;
-    indice = criaHash(tamanho);
-    return indice;
+    HashTable *hash = (HashTable *)malloc(sizeof(HashTable));
+    hash->tabela = (EntradaHash *)calloc(tamanho, sizeof(EntradaHash));
+    hash->tamanho = tamanho;
+    return hash;;
 }
 
 void libera(HashTable *hash) {
@@ -54,7 +53,7 @@ void consulta(HashTable *indice, char **palavras, int qtdPalavras) {
 
     // Itera sobre todas as palavras fornecidas
     for (int i = 0; i < qtdPalavras; i++) {
-        EntradaHash *resultado; // Corrigido: Substituir Nodo por EntradaHash
+        EntradaHash *resultado; 
         if (buscaHash(indice, palavras[i], &resultado)) {
             // Para a primeira palavra, inicializa o array de documentos
             if (i == 0) {

@@ -3,7 +3,6 @@
 #include <string.h>
 #include "hash.h"
 
-
 int hashFunction(char *chave, int m) {
     float p[] = {0.8326030060567271, 0.3224428884580177, 
     0.6964223353369197, 0.1966079596929834, 
@@ -17,16 +16,6 @@ int hashFunction(char *chave, int m) {
     }
     return soma % m;
 }
-
-
-HashTable* criaHash(int tamanho) {
-    if (tamanho > MAX_TAMANHO_VOCABULARIO) return NULL; // Verifica se o tamanho é válido
-    HashTable *hash = (HashTable *)malloc(sizeof(HashTable));
-    hash->tabela = (EntradaHash *)calloc(tamanho, sizeof(EntradaHash));
-    hash->tamanho = tamanho;
-    return hash;
-}
-
 
 
 int buscaHash(HashTable *hash, char *palavra, EntradaHash **resultado) {

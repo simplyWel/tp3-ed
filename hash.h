@@ -23,9 +23,7 @@ typedef struct {
 
 
 int hashFunction(char *chave, int m);
-HashTable* criaHash(int tamanho);
 int buscaHash(HashTable *hash, char *palavra, EntradaHash **resultado);
-
 
 
 #endif // HASH_H
