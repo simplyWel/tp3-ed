@@ -41,6 +41,23 @@ void insereDocumento(HashTable *indice, char *palavra, char *documento) {
     }
 }
 
+int busca(HashTable *hash, char *palavra, EntradaHash **resultado) {
+    int idx = hashFunction(palavra, hash->tamanho);
+    
+    for (int i = 0; i < hash->tamanho; i++) {
+        int pos = (idx + i) % hash->tamanho;
+        if (hash->tabela[pos].qtdDocumentos == 0) {
+            return 0;
+        }
+        if (strcmp(hash->tabela[pos].palavra, palavra) == 0) {
+            *resultado = &hash->tabela[pos];
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+
 void consulta(HashTable *indice, char **palavras, int qtdPalavras) {
     if (qtdPalavras > MAX_PALAVRAS_BUSCADAS) {
         printf("ERRO: Número de palavras buscadas excede o limite máximo.\n");
@@ -54,7 +71,7 @@ void consulta(HashTable *indice, char **palavras, int qtdPalavras) {
     // Itera sobre todas as palavras fornecidas
     for (int i = 0; i < qtdPalavras; i++) {
         EntradaHash *resultado; 
-        if (buscaHash(indice, palavras[i], &resultado)) {
+        if (busca(indice, palavras[i], &resultado)) {
             // Para a primeira palavra, inicializa o array de documentos
             if (i == 0) {
                 for (int j = 0; j < resultado->qtdDocumentos; j++) {

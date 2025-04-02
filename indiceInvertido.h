@@ -5,7 +5,7 @@
 
 HashTable* aloca(int tamanho);
 void libera(HashTable *indice);
-int busca(char *palavra);
+int busca(HashTable *hash, char *palavra, EntradaHash **resultado);
 void consulta(HashTable *indice, char **palavras, int qtdPalavras);
 void insereDocumento(HashTable *indice, char *palavra, char *documento);
 void imprime(HashTable *indice);
