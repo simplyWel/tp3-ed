@@ -18,21 +18,5 @@ int hashFunction(char *chave, int m) {
 }
 
 
-int buscaHash(HashTable *hash, char *palavra, EntradaHash **resultado) {
-    int idx = hashFunction(palavra, hash->tamanho);
-    
-    for (int i = 0; i < hash->tamanho; i++) {
-        int pos = (idx + i) % hash->tamanho;
-        if (hash->tabela[pos].qtdDocumentos == 0) {
-            return 0;
-        }
-        if (strcmp(hash->tabela[pos].palavra, palavra) == 0) {
-            *resultado = &hash->tabela[pos];
-            return 1;
-        }
-    }
-    
-    return 0;
-}
 
 
