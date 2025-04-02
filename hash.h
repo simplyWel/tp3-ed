@@ -22,16 +22,10 @@ typedef struct {
 } HashTable;
 
 
-
-
 int hashFunction(char *chave, int m);
 HashTable* criaHash(int tamanho);
-void liberaHash(HashTable *hash);
-int insereHash(HashTable *hash, char *palavra, char *documento);
 int buscaHash(HashTable *hash, char *palavra, EntradaHash **resultado);
-void imprimeHash(HashTable *hash);
-int comparaEntradas(const void *a, const void *b);
-void ordenaPalavras(HashTable *indice);
-void insereDocumento(char *palavra, char *documento);
+
+
 
 #endif // HASH_H
